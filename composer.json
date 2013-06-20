@@ -1,0 +1,23 @@
+{
+    "name": "capisso/salty",
+    "description": "Salty is an easy way to work with SaltStack.",
+    "authors": [
+        {
+            "name": "Luke Strickland",
+            "email": "luke@capisso.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Capisso\\Salty": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
