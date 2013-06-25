@@ -3,6 +3,7 @@
 class Job {
     private $apiBuilder;
     private $api;
+    private $jobApi;
     private $jid;
     private $jobInfo;
 
@@ -10,6 +11,8 @@ class Job {
         $this->apiBuilder = $apiBuilder;
         $this->api = $api;
         $this->jid = $jid;
+
+        $this->jobApi = new \Capisso\Salty\SaltJobApi($this->api);
     }
 
     public function getJobId() {
@@ -17,7 +20,7 @@ class Job {
     }
 
     public function isDone() {
-        return $this->api->isJobDone($this->jid);
+        return $this->jobApi->isJobDone($this->jid);
     }
 
     public function getResults($block=false) {
@@ -31,15 +34,15 @@ class Job {
     }
 
     public function signal($signal) {
-        return $this->api->signalJob($this->jid, $signal);
+        return $this->jobApi->signalJob($this->jid, $signal);
     }
 
     public function terminate() {
-        return $this->api->terminateJob($this->jid);
+        return $this->jobApi->terminateJob($this->jid);
     }
 
     public function kill() {
-        return $this->api->killJob($this->jid);
+        return $this->jobApi->killJob($this->jid);
     }
 
     private function getJobInfo() {
@@ -47,7 +50,7 @@ class Job {
             return $this->jobInfo;
         }
 
-        $jinfo = (array)$this->api->getJobInfo($this->jid);
+        $jinfo = (array)$this->jobApi->getJobInfo($this->jid);
 
         $this->jobInfo = array(
             'function' => $jinfo['Function'],

@@ -24,12 +24,14 @@ class SaltApiTest extends PHPUnit_Framework_TestCase
 
     public function testAsyncCommands()
     {
+        $jobApi = new \Capisso\Salty\SaltJobApi($this->saltApi);
+
         $ret = $this->saltApi->callAsync('glob', '*', 'cmd.retcode', array('sleep 1'));
-        $this->assertFalse($this->saltApi->isJobDone($ret->jid));
-        $this->assertEquals(count((array)$this->saltApi->getJobResult($ret->jid)), 0);
+        $this->assertFalse($jobApi->isJobDone($ret->jid));
+        $this->assertEquals(count((array)$jobApi->getJobResult($ret->jid)), 0);
         sleep(1.3);
-        $this->assertTrue($this->saltApi->isJobDone($ret->jid));
-        $this->assertNotEquals(count((array)$this->saltApi->getJobResult($ret->jid)), 0);
+        $this->assertTrue($jobApi->isJobDone($ret->jid));
+        $this->assertNotEquals(count((array)$jobApi->getJobResult($ret->jid)), 0);
     }
 
     public function testWheelCommands()
@@ -39,5 +41,10 @@ class SaltApiTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(isset($ret->minions_rejected));
         $this->assertTrue(isset($ret->minions));
         $this->assertTrue(isset($ret->local));
+    }
+
+    public function testRunnerCommands()
+    {
+        $this->assertEquals(0, count($this->saltApi->callRunner('jobs.active')));
     }
 }

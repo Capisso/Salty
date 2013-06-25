@@ -135,16 +135,18 @@ class SaltApi {
     }
 
     /**
-     * Find out if a job is done yet.
+     * Make a synchronous "runner" call to salt. This manages the salt master.
      *
      * @return stdClass
      **/
-    public function isJobDone($jobId) {
-        $resp = $this->call('glob', '*', 'saltutil.find_job', array($jobId));
-        foreach ($resp as $res) {
-            if (isset($res->fun)) return false;
-        }
-        return true;
+    public function callRunner($call, $params=array()) {
+        $obj = array(array_merge($params, array(
+            'client' => 'runner',
+            'fun' => $call
+        )));
+
+        $resp = $this->authenticatedRequest(Requests::POST, '/', $obj, true);
+        return $resp->return[0];
     }
 
     /**
@@ -156,41 +158,5 @@ class SaltApi {
     public function getJobResult($jobId) {
         $resp = $this->authenticatedRequest(Requests::GET, '/jobs/' . $jobId);
         return $resp->return[0];
-    }
-
-    /**
-     * Send a signal to a job.
-     **/
-    public function signalJob($jobId, $signal) {
-        $this->call('glob', '*', 'saltutil.signal_job', array($jobId, $signal));
-    }
-
-    /**
-     * Terminate a job (SIGTERM).
-     **/
-    public function terminateJob($jobId) {
-        $this->call('glob', '*', 'saltutil.term_job', array($jobId));
-    }
-
-    /**
-     * Kill a job (SIGKILL).
-     **/
-    public function killJob($jobId) {
-        $this->call('glob', '*', 'saltutil.kill_job', array($jobId));
-    }
-
-    /**
-     * Get job information for a specified job ID.
-     **/
-    public function getJobInfo($jobId) {
-        $obj = array(array(
-            'client' => 'runner',
-            'fun' => 'jobs.print_job',
-            'job_id' => $jobId
-        ));
-
-        $resp = $this->authenticatedRequest(Requests::POST, '/', $obj, true);
-        if (!isset($resp->return[0]->$jobId)) return null;
-        return $resp->return[0]->$jobId;
     }
 }
