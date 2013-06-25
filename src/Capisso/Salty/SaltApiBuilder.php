@@ -6,7 +6,8 @@ class SaltApiBuilder {
     private $againstFilterType = 'glob';
 
     private static $moduleRegistry = array(
-        'test' => 'Capisso\\Salty\\ModuleFacade\\Test'
+        'test' => 'Capisso\\Salty\\ModuleFacade\\Test',
+        'virt' => 'Capisso\\Salty\\ModuleFacade\\Virt'
     );
     private static $wheelRegistry = array(
         'key' => 'Capisso\\Salty\\WheelFacade\\Key'
