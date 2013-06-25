@@ -17,14 +17,4 @@ class Facade extends IlluminateFacade
         return 'salty';
     }
 
-    /**
-     * Serve a collection or number of collections.
-     *
-     * @return string
-     */
-    public static function show()
-    {
-
-    }
-
 }

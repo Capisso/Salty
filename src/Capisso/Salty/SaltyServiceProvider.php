@@ -28,7 +28,20 @@ class SaltyServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		\App::bind('salty', function()
+		{
+			$masterHost = \Config::get('salt.host');
+			$masterPort = \Config::get('salt.port');
+			$credentials = \Config::get('salt.credentials');
+			$authType = \Config::get('salt.auth_type');
+			$validation = \Config::get('salt.api_certificate_path');
+
+			$api = new SaltApi(
+				$masterHost, $masterPort, $authType, $credentials, $validation
+			);
+
+			return new SaltApiBuilder($api);
+		});
 	}
 
 	/**
