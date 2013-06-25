@@ -120,6 +120,21 @@ class SaltApi {
     }
 
     /**
+     * Make a synchronous "wheel" call to salt. This manages the salt master.
+     *
+     * @return stdClass
+     **/
+    public function callWheel($call, $params=array()) {
+        $obj = array(array_merge($params, array(
+            'client' => 'wheel',
+            'fun' => $call
+        )));
+
+        $resp = $this->authenticatedRequest(Requests::POST, '/', $obj, true);
+        return $resp->return[0];
+    }
+
+    /**
      * Find out if a job is done yet.
      *
      * @return stdClass

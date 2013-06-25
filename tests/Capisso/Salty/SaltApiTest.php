@@ -31,4 +31,13 @@ class SaltApiTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->saltApi->isJobDone($ret->jid));
         $this->assertNotEquals(count((array)$this->saltApi->getJobResult($ret->jid)), 0);
     }
+
+    public function testWheelCommands()
+    {
+        $ret = $this->saltApi->callWheel('key.list_all');
+        $this->assertTrue(isset($ret->minions_pre));
+        $this->assertTrue(isset($ret->minions_rejected));
+        $this->assertTrue(isset($ret->minions));
+        $this->assertTrue(isset($ret->local));
+    }
 }

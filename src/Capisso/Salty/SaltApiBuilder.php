@@ -8,6 +8,9 @@ class SaltApiBuilder {
     private static $moduleRegistry = array(
         'test' => 'Capisso\\Salty\\ModuleFacade\\Test'
     );
+    private static $wheelRegistry = array(
+        'key' => 'Capisso\\Salty\\WheelFacade\\Key'
+    );
 
     public function __construct($api) {
         $this->api = $api;
@@ -44,6 +47,21 @@ class SaltApiBuilder {
     }
 
     /**
+     * Returns a specific module facade for a given wheel module.
+     *
+     * @return object
+     **/
+    public function wheelModule($moduleName) {
+        if (!isset(self::$wheelRegistry[$moduleName])) {
+            throw new \Exception("$moduleName does not exist in SaltApiBuilder's wheel module registry");
+        }
+
+        $className = self::$wheelRegistry[$moduleName];
+
+        return new $className($this, $this->api);
+    }
+
+    /**
      * Adds a new module to the module registry.
      *
      * @param $moduleName The name of the Salt module you're wrapping
@@ -59,6 +77,24 @@ class SaltApiBuilder {
         }
 
         self::$moduleRegistry[$moduleName] = $moduleClass;
+    }
+
+    /**
+     * Adds a new wheel module to the wheel module registry.
+     *
+     * @param $moduleName The name of the Salt wheel module you're wrapping
+     * @param $moduleClass The class path to the module facade
+     **/
+    public static function registerWheelModule($moduleName, $moduleClass) {
+        if (isset(self::$wheelRegistry[$moduleName])) {
+            throw new \Exception("Tried to register $moduleName again in SaltApiBuilder registry");
+        }
+
+        if ($moduleClass::getModuleName() != $moduleName) {
+            throw new \Exception("Module name mismatch - $moduleName != " . $moduleClass::getModuleName());
+        }
+
+        self::$wheelRegistry[$moduleName] = $moduleClass;
     }
 
     /**
