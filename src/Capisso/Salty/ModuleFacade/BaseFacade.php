@@ -13,7 +13,9 @@ abstract class BaseFacade {
         $this->filterType = $filterType;
     }
 
-    public static abstract function getModuleName();
+    public static function getModuleName() {
+        throw new \Exception("You must override getModuleName() in subclasses!");
+    }
 
     public function parseResult($method, $arguments, $results) {
         return array_pop($results);
