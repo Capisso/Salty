@@ -3,6 +3,10 @@
     "description": "Salty is an easy way to work with SaltStack.",
     "authors": [
         {
+            "name": "Luke GB",
+            "email": "git@lukegb.com"
+        },
+        {
             "name": "Luke Strickland",
             "email": "luke@capisso.org"
         }
@@ -16,9 +20,6 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "classmap": [
-            "src/migrations"
-        ],
         "psr-0": {
             "Capisso\\Salty": "src/"
         }
