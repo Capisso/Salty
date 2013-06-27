@@ -7,7 +7,8 @@ class SaltApiBuilder {
 
     private static $moduleRegistry = array(
         'test' => 'Capisso\\Salty\\ModuleFacade\\Test',
-        'virt' => 'Capisso\\Salty\\ModuleFacade\\Virt'
+        'virt' => 'Capisso\\Salty\\ModuleFacade\\Virt',
+        'status' => 'Capisso\\Salty\\ModuleFacade\\Status'
     );
     private static $wheelRegistry = array(
         'key' => 'Capisso\\Salty\\WheelFacade\\Key'
