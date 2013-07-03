@@ -57,8 +57,9 @@ class SaltJobApi {
      * Get job information for a specified job ID.
      **/
     public function getJobInfo($jobId) {
-        return $this->api->callRunner(
+        $results = (array)$this->api->callRunner(
             'jobs.print_job', array('job_id' => $jobId)
-        )->$jobId;
+        );
+        return $results[$jobId];
     }
 }

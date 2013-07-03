@@ -45,6 +45,8 @@ class SaltApiTest extends PHPUnit_Framework_TestCase
 
     public function testRunnerCommands()
     {
-        $this->assertEquals(0, count($this->saltApi->callRunner('jobs.active')));
+        $activeJobs = $this->saltApi->callRunner('jobs.active');
+        $activeJobsArray = (array)$activeJobs;
+        $this->assertEquals(0, count($activeJobsArray));
     }
 }
